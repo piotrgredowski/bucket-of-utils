@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from dataclasses import field
+from pathlib import Path
 from typing import Literal
 
 import pdf_annotate as pa
@@ -13,7 +14,7 @@ class AnnotationConfig:
     y_end: int = field(default=100)
     page: Literal["*"] | int = field(default="*")
     font_size: int = field(default=10)
-    text_pattern: str = field(default="{file_name}")
+    text_pattern: str = field(default="{file_name_without_extension}")
 
 
 def add_file_name_annotation_to_pdf(
@@ -32,7 +33,9 @@ def add_file_name_annotation_to_pdf(
         text_baseline="bottom",
         fill=[0, 0, 0],
     )
-    text = config.text_pattern.format(file_name=file_name)
+    file_name_without_extension = Path(file_name).stem
+
+    text = config.text_pattern.format(file_name=file_name, file_name_without_extension=file_name_without_extension)
 
     if config.page == "*":
         # FIXME: is there better way to get number of pages?
