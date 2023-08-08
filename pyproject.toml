@@ -1,0 +1,108 @@
+[project]
+name = "bucket-of-utils"
+version = "0.1.0"
+description = "Bunch of utils to be hosted on GH pages using `pyscript`."
+authors = [{ name = "Piotr Grędowski", email = "piotrgredowski@gmail.com" }]
+dependencies = [
+    "pdf-annotate>=0.12.0",
+]
+readme = "README.md"
+requires-python = ">= 3.11"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.7.0",
+    "ruff>=0.0.282",
+    "pre-commit>=3.3.3",
+    "mypy>=1.4.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
+
+# NOTE: All Ruff rules sets are listed below. For ruff==0.0.280
+
+select = [
+    "F",   # Pyflakes
+    "E",   # pycodestyle
+    "W",   # pycodestyle
+    "C90", # mccabe
+    "I",   # isort
+    "N",   # pep8-naming
+    # "D", # pydocstyle
+    "UP",  # pyupgrade
+    "YTT", # flake8-2020
+    # "ANN", # flake8-annotations
+    "ASYNC", # flake8-async
+    # "S", # flake8-bandit
+    "BLE", # flake8-blind-except
+    "FBT", # flake8-boolean-trap
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "COM", # flake8-commas
+    # "CPY", # flake8-copyright
+    "C4", # flake8-comprehensions
+    # "DTZ", # flake8-datetimez
+    "T10", # flake8-debugger
+    # "DJ", # flake8-django
+    # "EM", # flake8-errmsg
+    "EXE", # flake8-executable
+    "FA",  # flake8-future-annotations
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    # "G", # flake8-logging-format
+    # "INP", # flake8-no-pep420
+    "PIE", # flake8-pie
+    # "T20", # flake8-print
+    "PYI",  # flake8-pyi
+    "PT",   # flake8-pytest-style
+    "Q",    # flake8-quotes
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "SLF",  # flake8-self
+    "SLOT", # flake8-slots
+    "SIM",  # flake8-simplify
+    "TID",  # flake8-tidy-imports
+    # "TCH", # flake8-type-checking
+    # "INT", # flake8-gettext
+    "ARG", # flake8-unused-arguments
+    # "PTH", # flake8-use-pathlib
+    # "TD",  # flake8-todos
+    # "FIX", # flake8-fixme
+    # "ERA", # eradicate
+    # "PD", # pandas-vet
+    # "PGH", # pygrep-hooks
+    "PL",  # Pylint
+    "TRY", # tryceratops
+    "FLY", # flynt
+    # "NPY", # NumPy-specific rules
+    # "AIR", # Airflow
+    "PERF", # Perflint
+    "RUF",  # Ruff-specific rules
+]
+
+extend-ignore = ["F841"]
+
+[tool.ruff.extend-per-file-ignores]
+"tests/**/*.py" = ["PLR2004"]
+
+[tool.ruff.isort]
+known-first-party = ["src"]
+force-single-line = true
+
+[tool.mypy]
+exclude = [".venv"]
