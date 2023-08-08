@@ -11,7 +11,7 @@ class AnnotationConfig:
     x_end: int = field(default=320)
     y_start: int = field(default=20)
     y_end: int = field(default=100)
-    page: Literal["*"] | int = field(default=0)
+    page: Literal["*"] | int = field(default="*")
     font_size: int = field(default=10)
     text_pattern: str = field(default="{file_name}")
 
