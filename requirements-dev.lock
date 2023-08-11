@@ -9,14 +9,19 @@
 -e file:.
 attrs==23.1.0
 black==23.7.0
+certifi==2023.7.22
 cfgv==3.3.1
+charset-normalizer==3.2.0
 click==8.1.6
 coverage==7.2.7
 distlib==0.3.7
 filelock==3.12.2
 fonttools==4.42.0
 identify==2.5.26
+idna==3.4
 iniconfig==2.0.0
+markdown-it-py==3.0.0
+mdurl==0.1.2
 mypy==1.4.1
 mypy-extensions==1.0.0
 nodeenv==1.8.0
@@ -28,11 +33,21 @@ pillow==10.0.0
 platformdirs==3.10.0
 pluggy==1.2.0
 pre-commit==3.3.3
+pygments==2.16.1
+pyodide-py==0.23.4
 pytest==7.4.0
 pytest-cov==4.1.0
+pytest-mock==3.11.1
 pyyaml==6.0.1
-ruff==0.0.282
+requests==2.31.0
+rich==13.5.2
+ruff==0.0.284
+shellingham==1.5.0.post1
+typer==0.9.0
+types-requests==2.31.0.2
+types-urllib3==1.26.25.14
 typing-extensions==4.7.1
+urllib3==2.0.4
 virtualenv==20.24.2
 # The following packages are considered to be unsafe in a requirements file:
 setuptools==68.0.0
