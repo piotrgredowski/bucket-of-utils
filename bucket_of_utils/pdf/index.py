@@ -13,6 +13,7 @@ from js import document
 from js import window
 from pyodide.ffi import create_proxy
 from pyodide.ffi import to_js
+from unidecode import unidecode
 
 CONFIG_DISABLED = True
 
@@ -84,19 +85,25 @@ async def _process_files(*_, **__):
 
     results = document.getElementById("results")
 
-    for file_ in files:
+    no_of_files = len(files)
+
+    for idx, file_ in enumerate(files):
         file_bytes = await get_bytes_from_file(file_)
         stream = io.BytesIO(file_bytes)
         reader = pdfrw.PdfReader(stream)
         doc = pdf_annotate.PdfAnnotator(reader)
 
-        converted = add_file_name_annotation_to_pdf(doc=doc, file_name=file_.name)
+        file_name = unidecode(file_.name)
+
+        converted = add_file_name_annotation_to_pdf(doc=doc, file_name=file_name)
         with tempfile.NamedTemporaryFile() as f:
             converted.write(f)
             f.seek(0)
             content = f.read()
 
         converted_files.append((file_.name, content))
+
+        print(f"Processed {idx + 1}/{no_of_files} '{file_.name}'")
 
     results_file_name = "results.zip"
     with zipfile.ZipFile(results_file_name, mode="w") as zf:
@@ -117,6 +124,8 @@ async def _process_files(*_, **__):
 
     results.appendChild(download_link)
     results.style = {"display": "auto"}
+
+    print("DONE")
 
 
 show_files = create_proxy(_show_files)
