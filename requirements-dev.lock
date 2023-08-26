@@ -13,6 +13,7 @@ certifi==2023.7.22
 cfgv==3.3.1
 charset-normalizer==3.2.0
 click==8.1.6
+colorama==0.4.6
 coverage==7.2.7
 distlib==0.3.7
 filelock==3.12.2
@@ -35,14 +36,16 @@ pluggy==1.2.0
 pre-commit==3.3.3
 pygments==2.16.1
 pyodide-py==0.23.4
+pypng==0.20220715.0
 pytest==7.4.0
 pytest-cov==4.1.0
 pytest-mock==3.11.1
 pyyaml==6.0.1
+qrcode==7.4.2
 requests==2.31.0
 rich==13.5.2
 ruff==0.0.284
-shellingham==1.5.0.post1
+shellingham==1.5.3
 typer==0.9.0
 types-requests==2.31.0.2
 types-urllib3==1.26.25.14

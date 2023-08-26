@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "Wifi QR Code",
+      "type": "python",
+      "request": "launch",
+      "module": "bucket_of_utils.qr.wifi",
+      "justMyCode": true,
+      "args": [
+        "--ssid",
+        "my_ssid",
+        "--password",
+        "my_password",
+        "--security",
+        "wpa"
+      ]
+    }
+  ]
+}
