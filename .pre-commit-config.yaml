@@ -27,14 +27,15 @@ repos:
   #     - id: mypy
   #       args: [--ignore-missing-imports, --follow-imports=skip]
 
-  # - repo: local
-  #   hooks:
-  #     - id: unittests
-  #       name: run unit tests
-  #       entry: python -m pytest
-  #       language: system
-  #       pass_filenames: false
-  #       always_run: true
-  #       args: [
-  #         --doctest-modules
-  #       ]
+  - repo: local
+    hooks:
+      - id: unittests
+        name: run unit tests
+        entry: python -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args: [
+          tests,
+          --doctest-modules
+        ]

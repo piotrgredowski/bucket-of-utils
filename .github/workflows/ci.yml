@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Python and pre-commit
+      uses: ./.github/actions/setup-ci
+    - name: Pre-commit
+      run: |
+        SKIP=unittests pre-commit run --all-files --color=always
+  unittests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Python and pre-commit
+      uses: ./.github/actions/setup-ci
+    - name: Test with pytest
+      run: |
+        python -m pytest tests

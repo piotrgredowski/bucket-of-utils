@@ -1,0 +1,23 @@
+name: Setup CI
+description: Setup Python and pre-commit for CI
+runs:
+  using: composite
+  steps:
+  - name: Set up Python 3.11
+    uses: actions/setup-python@v3
+    with:
+      python-version: "3.11"
+      cache: "pip"
+      cache-dependency-path: |
+        requirements.lock
+        requirements-dev.lock
+  - name: Install dependencies
+    shell: bash
+    run: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.lock -r requirements-dev.lock
+  - name: Cache pre-commit
+    uses: actions/cache@v3
+    with:
+      path: ~/.cache/pre-commit
+      key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
