@@ -1,5 +1,7 @@
 # bucket-of-utils
 
+[![CI](https://github.com/piotrgredowski/bucket-of-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/piotrgredowski/bucket-of-utils/actions/workflows/ci.yml)
+
 Bunch of utils to be hosted on GH pages using `pyscript`.
 
 Look at: [https://gredowski.com/bucket-of-utils/](https://gredowski.com/bucket-of-utils/)
