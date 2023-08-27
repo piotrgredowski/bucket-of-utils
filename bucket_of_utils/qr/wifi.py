@@ -1,4 +1,5 @@
 import enum
+import os
 from pathlib import Path
 from typing import Annotated
 
@@ -24,7 +25,7 @@ class SecurityTypes(enum.StrEnum):
 
 
 def get_font():
-    path_to_font = "_static/fonts/Lato-Regular.ttf"
+    path_to_font = "_static/fonts/FiraCode-Regular.ttf"
     return ImageFont.truetype(path_to_font, 30)
 
 
@@ -87,6 +88,24 @@ def save_image(*, image: PIL.Image, image_file_name: str, directory_to_save: str
     return str(path)
 
 
+def get_formatted_ssid_and_password_texts(*, ssid: str, password: str):
+    ssid_prefix = "SSID"
+    password_prefix = "Password"
+
+    max_prefix_length = max(len(ssid_prefix), len(password_prefix))
+    ssid_prefix = ssid_prefix.rjust(max_prefix_length)
+    password_prefix = password_prefix.rjust(max_prefix_length)
+
+    ssid_text = f"{ssid_prefix}: {ssid}"
+    password_text = f"{password_prefix}: {password}"
+
+    max_text_length = max(len(ssid_text), len(password_text))
+    ssid_text = ssid_text.ljust(max_text_length)
+    password_text = password_text.ljust(max_text_length)
+
+    return ssid_text, password_text
+
+
 def generate_qr_code(  # noqa: PLR0913
     ssid: Annotated[str, typer.Option(help="The SSID of the wifi network")],
     password: Annotated[str, typer.Option(help="The password of the wifi network")],
@@ -121,11 +140,10 @@ def generate_qr_code(  # noqa: PLR0913
 
     font = get_font()
 
-    ssid_text = f"SSID: {ssid}"
+    ssid_text, password_text = get_formatted_ssid_and_password_texts(ssid=ssid, password=password)
+
     image = make_image_fit_to_text(image, text=ssid_text, font=font)
     image = add_text_to_image(image, text=ssid_text, y=20, font=font)
-
-    password_text = f"Password: {password}"
 
     image = make_image_fit_to_text(image, text=password_text, font=font)
     image = add_text_to_image(image, text=password_text, y=70, font=font)
@@ -133,6 +151,9 @@ def generate_qr_code(  # noqa: PLR0913
     image_file_name = f"{ssid.lower()}.png"
 
     image = add_border_to_image(image, border=(5, 5, 5, 5), fill="black")
+
+    if str(os.environ.get("DEBUG")) == "1":
+        image.show()
 
     path = save_image(
         image=image,
