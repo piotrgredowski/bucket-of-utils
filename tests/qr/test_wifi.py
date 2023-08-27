@@ -14,10 +14,7 @@ def test_getting_wifi_string():
 
 
 def test_getting_wifi_string_with_no_password():
-    assert (
-        wifi.get_qr_string(ssid="ssid", password="", security="nopass", hidden=False)
-        == "WIFI:S:ssid;T:nopass;P:;H:False;;"
-    )
+    assert wifi.get_qr_string(ssid="ssid", password="", security="", hidden=False) == "WIFI:S:ssid;T:;P:;H:False;;"
 
 
 def test_generating_qr_code():

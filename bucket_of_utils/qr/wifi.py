@@ -14,13 +14,13 @@ from qrcode.image.styles.moduledrawers.pil import SquareModuleDrawer
 
 def get_qr_string(*, ssid: str, password: str, security: str, hidden: bool):
     """Generate a QR string for a given wifi network"""
-    return f"WIFI:S:{ssid};T:{security};P:{password};H:{hidden};;"
+    return f"WIFI:S:{ssid};T:{security.upper()};P:{password};H:{hidden};;"
 
 
 class SecurityTypes(enum.StrEnum):
     WPA = enum.auto()
     WEP = enum.auto()
-    nopass = enum.auto()
+    no_password = ""
 
 
 def get_font():
