@@ -26,7 +26,11 @@ class SecurityTypes(enum.StrEnum):
 
 def get_font():
     path_to_font = "_static/fonts/FiraCode-Regular.ttf"
-    return ImageFont.truetype(path_to_font, 30)
+
+    try:
+        return ImageFont.truetype(path_to_font, 30)
+    except OSError:
+        return ImageFont.load_default()
 
 
 def add_text_to_image(image: PIL.Image, text: str, y: int, font: ImageFont):
@@ -116,8 +120,9 @@ def generate_qr_code(  # noqa: PLR0913
         bool,
         typer.Option(help="Whether to overwrite the QR code if it already exists"),
     ] = False,  # noqa: FBT002
-):
+) -> PIL.Image:
     """Generate a QR code for a given WIFI network"""
+    security = SecurityTypes(security.lower())
     string = get_qr_string(ssid=ssid, password=password, security=security.value, hidden=hidden)
 
     qr = qrcode.QRCode(
@@ -163,6 +168,8 @@ def generate_qr_code(  # noqa: PLR0913
     )
 
     print(f"QR code saved to: {path}")
+
+    return image
 
 
 def main():

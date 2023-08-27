@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.2.1.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@holoviz/panel@1.2.1/dist/panel.min.js"></script>
+
+    <style>
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+  </head>
+  <py-config type="toml">
+    packages = [
+      "qrcode",
+      "pillow",
+      "typer",
+      "https://cdn.holoviz.org/panel/1.2.1/dist/wheels/bokeh-3.2.1-py3-none-any.whl",
+      "https://cdn.holoviz.org/panel/1.2.1/dist/wheels/panel-1.2.1-py3-none-any.whl"
+    ]
+    [[fetch]]
+    files = ["./index.py"]
+    [[fetch]]
+    from = "../../bucket_of_utils/qr/wifi.py"
+    to_folder = "bucket_of_utils/qr"
+    [[fetch]]
+    from = "../../bucket_of_utils/panel_autogenerator/main.py"
+    to_folder = "bucket_of_utils/panel_autogenerator"
+    [[fetch]]
+    from = "https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/ttf"
+    files = ["FiraCode-Regular.ttf"]
+    to_folder = "_static/fonts"
+
+  </py-config>
+
+  <body>
+    <main class="container row" id="main">
+    </main>
+    <py-script src="./index.py"></py-script>
+    <py-script> </py-script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+  </body>
+
+</html>
