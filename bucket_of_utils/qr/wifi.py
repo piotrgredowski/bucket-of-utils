@@ -41,10 +41,10 @@ def add_text_to_image(image: PIL.Image, text: str, y: int, font: ImageFont):
     return image
 
 
-def add_border_to_image(image: PIL.Image, border: tuple[int, int, int, int]):
+def add_border_to_image(image: PIL.Image, border: tuple[int, int, int, int], fill="white"):
     from PIL import ImageOps
 
-    return ImageOps.expand(image, border=border, fill="white")
+    return ImageOps.expand(image, border=border, fill=fill)
 
 
 def get_width_to_add(image: PIL.Image, text: str, font: ImageFont):
@@ -131,6 +131,8 @@ def generate_qr_code(  # noqa: PLR0913
     image = add_text_to_image(image, text=password_text, y=70, font=font)
 
     image_file_name = f"{ssid.lower()}.png"
+
+    image = add_border_to_image(image, border=(5, 5, 5, 5), fill="black")
 
     path = save_image(
         image=image,
