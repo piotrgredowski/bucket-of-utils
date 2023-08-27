@@ -37,6 +37,7 @@ dev-dependencies = [
     "mypy>=1.4.1",
     "pytest-mock>=3.11.1",
     "types-requests>=2.31.0.2",
+    "imgcompare>=2.0.1",
 ]
 
 [tool.hatch.metadata]

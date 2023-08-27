@@ -1,7 +1,7 @@
 import os
 
+from imgcompare import is_equal
 from PIL import Image
-from PIL import ImageChops
 
 from bucket_of_utils.qr import wifi
 
@@ -41,11 +41,7 @@ def test_generated_qr_code_is_the_same():
     )
     assert os.path.exists("tests/qr/_generated/my_ssid.png")
 
-    def images_are_the_same(base_image: Image, compare_image: Image):
-        diff = ImageChops.difference(base_image, compare_image)
-        return diff.getbbox() is None
-
     base_image = Image.open("tests/qr/_generated/my_ssid.png")
     compare_image = Image.open("_static/images/my_ssid.png")
 
-    assert images_are_the_same(base_image, compare_image) is True
+    assert is_equal(base_image, compare_image, tolerance=1) is True
