@@ -18,6 +18,6 @@ widget_box = generate_panel_code(
     generate_qr_code,
     args_to_skip=["directory_to_save_qr_code", "overwrite"],
     default_args_values=default_args_values,
-    additional_widget_map=additional_widget_map,
+    arg_type_widget_map=additional_widget_map,
 )
 widget_box.servable(target="main")
