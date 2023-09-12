@@ -16,6 +16,8 @@ from typing import TypedDict
 import panel as pn
 import PIL
 
+from ._style import Style
+
 
 def _get_all_args_and_kwargs_names(function: Callable) -> tuple:
     args = function.__code__.co_varnames[: function.__code__.co_argcount]
@@ -60,19 +62,68 @@ def get_help_for_arg(function: Callable, arg_name: str) -> str | None:
         return None
 
 
-def generate_panel_code(  # noqa: C901,PLR0915
+def __widget_factory_wrapper(*, widget_dict, args_factory, arg_type, additional_args):
+    def widget_factory(*args, **kwargs):
+        nonlocal additional_args
+        additional_args_ = additional_args.copy()
+
+        if args_factory is not None:
+            additional_args_ = {**args_factory(arg_type), **additional_args_}
+
+        return widget_dict["widget"](*args, **kwargs, **additional_args_)
+
+    return widget_factory
+
+
+def __initialize_arg_dicts(
+    *arg_dicts,
+    **__,
+):
+    return (arg_dict or {} for arg_dict in arg_dicts)
+
+
+def _build_widgets(widgets, default_args_values, function):
+    widgets_list = []
+    for arg_name, widget_type in widgets.items():
+        name = arg_name
+        if help_text := get_help_for_arg(function, arg_name):
+            name = f"{arg_name} ({help_text})"
+        value = default_args_values.get(arg_name, None)
+        widget_kwargs = {"name": name}
+        if value is not None:
+            widget_kwargs["value"] = value
+
+        widgets_list.append(widget_type(**widget_kwargs))
+
+    return widgets_list
+
+
+def generate_panel_code(  # noqa: C901, PLR0913
     function: Callable,
     *,
     default_args_values: Optional[dict[str, typing.Any]] = None,
     args_to_skip: Optional[list[str]] = None,
-    additional_widget_map: Optional[dict[type, pn.widgets.Widget]] = None,
+    arg_type_widget_map: Optional[dict[type, pn.widgets.Widget]] = None,
+    arg_name_widget_map: Optional[dict[str, pn.widgets.Widget]] = None,
+    options_for_widgets: Optional[dict[str, dict[str, typing.Any]]] = None,
+    style: Optional[Style] = None,
 ) -> str:
-    if default_args_values is None:
-        default_args_values = {}
-    if args_to_skip is None:
-        args_to_skip = []
-    if additional_widget_map is None:
-        additional_widget_map = {}
+    (
+        default_args_values,
+        args_to_skip,
+        arg_type_widget_map,
+        arg_name_widget_map,
+        options_for_widgets,
+    ) = __initialize_arg_dicts(
+        default_args_values,
+        args_to_skip,
+        arg_type_widget_map,
+        arg_name_widget_map,
+        options_for_widgets,
+    )
+
+    if style is None:
+        style = Style()
     args, kwargs = _get_all_args_and_kwargs_names(function)
 
     args_types = {arg_name: get_type_of_arg(function, arg_name) for arg_name in args}
@@ -80,34 +131,26 @@ def generate_panel_code(  # noqa: C901,PLR0915
 
     widgets = {}
 
-    elements_map = {**PANEL_ELEMENTS_MAP, **additional_widget_map}
+    elements_map = {**PANEL_ELEMENTS_MAP, **arg_type_widget_map}
 
     for arg_name, arg_type in [*args_types.items(), *kwargs_types.items()]:
         if arg_name in args_to_skip:
             continue
         widget_dict = elements_map.get(arg_type, None)
+        if arg_name in arg_name_widget_map:
+            widget_dict = WidgetDict(widget=arg_name_widget_map[arg_name], args_factory=widget_dict["args_factory"])
         if widget_dict is None:
             continue
         args_factory = widget_dict.get("args_factory", None)
 
-        def widget_factory_wrapper(*, widget_dict, args_factory, arg_type):
-            def widget_factory(*args, **kwargs):
-                additional_args = {}
-
-                if args_factory is not None:
-                    additional_args = args_factory(arg_type)
-
-                return widget_dict["widget"](*args, **kwargs, **additional_args)
-
-            return widget_factory
-
-        widgets[arg_name] = widget_factory_wrapper(
+        widgets[arg_name] = __widget_factory_wrapper(
             widget_dict=widget_dict,
             args_factory=args_factory,
             arg_type=arg_type,
+            additional_args=options_for_widgets.get(arg_name, {}),
         )
 
-    function_name = " ".join(function.__name__.upper().split("_"))
+    function_name = style.format_title(function.__name__)
 
     doc_of_function = function.__doc__ or None
     if doc_of_function:
@@ -119,19 +162,7 @@ def generate_panel_code(  # noqa: C901,PLR0915
 """.strip(),
         )
 
-    widgets_list = []
-    for arg_name, widget_type in widgets.items():
-        name = arg_name
-        if help_text := get_help_for_arg(function, arg_name):
-            name = f"{arg_name} ({help_text})"
-        value = default_args_values.get(arg_name, None)
-        widget_kwargs = {"name": name}
-        if value is not None:
-            widget_kwargs["value"] = value
-
-        pass
-        # widget_kwargs["options"] = [e.name for e in arg_type]
-        widgets_list.append(widget_type(**widget_kwargs))
+    widgets_list = _build_widgets(widgets=widgets, default_args_values=default_args_values, function=function)
 
     button = pn.widgets.Button(name="Run", button_type="primary")
     widgets_list.append(button)
