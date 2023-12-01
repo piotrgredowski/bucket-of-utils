@@ -1,0 +1,47 @@
+#!/bin/bash
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+
+file=".related_work_items"
+
+work_items_prefix="#"
+
+# If the file exists, read it line by line and store it in an array
+# if not - exit without modifying the commit message
+if [ -f "$file" ]
+then
+    related_work_items=()
+    while IFS= read -r line
+    do
+        related_work_items+=("$line")
+    done < "$file"
+else
+    exit 0
+fi
+
+# Build the suffix string
+
+suffix_template="
+
+Related work items: "
+
+work_items_suffix=$suffix_template
+
+separator=", "
+
+for i in "${related_work_items[@]}"
+do
+    work_items_suffix+="$work_items_prefix$i"
+    if [[ $i != "${related_work_items[-1]}" ]]
+    then
+        work_items_suffix+="$separator"
+    fi
+done
+
+# Add the suffix to the beginning of the commit message
+
+commit_message=$(cat $COMMIT_MSG_FILE)
+
+echo "$work_items_suffix$commit_message" > $COMMIT_MSG_FILE
