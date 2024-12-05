@@ -2,5 +2,10 @@
   "liveServer.settings.port": 5501,
   "cSpell.words": [
     "typer"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#5A0A38",
+    "titleBar.activeBackground": "#7E0E4E",
+    "titleBar.activeForeground": "#FFFCFD"
+  }
 }
