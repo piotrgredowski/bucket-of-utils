@@ -184,6 +184,8 @@ class PerformanceTest:
                 indent=4,
             )
 
+        print(f"\nYour results have been saved to: '{path_to_file}'")
+
 
 class GitOperationsTest(PerformanceTest):
     def __init__(self, repo_url: str, base_dir: Optional[str] = None):
