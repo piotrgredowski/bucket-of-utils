@@ -15,6 +15,7 @@ from pyodide.ffi import create_proxy
 from pyodide.ffi import to_js
 from unidecode import unidecode
 
+
 CONFIG_DISABLED = True
 
 

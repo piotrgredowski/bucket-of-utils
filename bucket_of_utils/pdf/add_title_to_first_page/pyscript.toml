@@ -1,0 +1,4 @@
+packages = ["pdf-annotate", "pdfrw", "unidecode"]
+
+[files]
+"./add_title_to_first_page.py" = "./add_title_to_first_page.py"
