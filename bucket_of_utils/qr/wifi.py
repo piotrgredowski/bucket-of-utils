@@ -12,6 +12,13 @@ from PIL import ImageFont
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers.pil import SquareModuleDrawer
 
+versions = {
+    "PIL": PIL.__version__,
+    "typer": typer.__version__,
+}
+
+print(versions)
+
 
 def get_qr_string(*, ssid: str, password: str, security: str, hidden: bool):
     """Generate a QR string for a given wifi network"""
@@ -119,7 +126,7 @@ def generate_qr_code(  # noqa: PLR0913
     overwrite: Annotated[
         bool,
         typer.Option(help="Whether to overwrite the QR code if it already exists"),
-    ] = False,  # noqa: FBT002
+    ] = False,
 ) -> PIL.Image:
     """Generate a QR code for a given WIFI network"""
     security = SecurityTypes(security.lower())
@@ -174,6 +181,27 @@ def generate_qr_code(  # noqa: PLR0913
 
 def main():
     typer.run(generate_qr_code)
+
+
+def serve():
+    from bucket_of_utils import panel_autogenerator as pag
+
+    default_args_values = {
+        "security": "wpa",
+        "hidden": False,
+    }
+
+    additional_widget_map: dict[type, pag.WidgetDict] = {
+        SecurityTypes: pag.PANEL_ELEMENTS_MAP[enum.Enum],
+    }
+
+    widget_box = pag.generate_panel_code(
+        generate_qr_code,
+        args_to_skip=["directory_to_save_qr_code", "overwrite"],
+        default_args_values=default_args_values,
+        arg_type_widget_map=additional_widget_map,
+    )
+    widget_box.servable(target="main")
 
 
 if __name__ == "__main__":

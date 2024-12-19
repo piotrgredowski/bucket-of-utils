@@ -1,0 +1,17 @@
+packages = [
+    "pillow==10.2.0",
+    "qrcode[pil]==7.4.2",
+    "typer==0.15.1",
+    "https://cdn.holoviz.org/panel/1.5.5/dist/wheels/bokeh-3.6.2-py3-none-any.whl",
+    "https://cdn.holoviz.org/panel/1.5.5/dist/wheels/panel-1.5.5-py3-none-any.whl",
+]
+[files]
+"./index.py" = "./index.py"
+"{SOURCE}" = "../../bucket_of_utils"
+"{TARGET}" = "bucket_of_utils"
+"{SOURCE}/qr/wifi.py" = "{TARGET}/qr/wifi.py"
+"{SOURCE}/panel_autogenerator/__init__.py" = "{TARGET}/panel_autogenerator/__init__.py"
+"{SOURCE}/panel_autogenerator/_generate.py" = "{TARGET}/panel_autogenerator/_generate.py"
+"{SOURCE}/panel_autogenerator/_style.py" = "{TARGET}/panel_autogenerator/_style.py"
+
+"https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/ttf/FiraCode-Regular.ttf" = "_static/fonts/FiraCode-Regular.ttf"

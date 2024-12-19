@@ -14,7 +14,7 @@ from typing import Optional
 from typing import TypedDict
 
 import panel as pn
-import PIL
+from PIL import Image
 
 from ._style import Style
 
@@ -27,16 +27,17 @@ def _get_all_args_and_kwargs_names(function: Callable) -> tuple:
     return args, kwargs
 
 
-def get_type_of_arg(function: Callable, arg_name: str) -> str:
-    try:
-        type_ = function.__annotations__.get(arg_name).__args__
-        return type_[0]
-    except (AttributeError, IndexError):
-        return function.__annotations__.get(arg_name, typing.Any)
+def get_type_of_arg(function: Callable, arg_name: str) -> typing.Any:
+    annotation = function.__annotations__.get(arg_name, typing.Any)
+    if getattr(annotation, "__origin__", None) is typing.Annotated:
+        return annotation.__args__[0]
+    if type_ := getattr(annotation, "__origin__", None):
+        return type_
+    return annotation
 
 
 class WidgetDict(TypedDict):
-    widget: pn.widgets.Widget
+    widget: type[pn.widgets.Widget]
     args_factory: Optional[Callable]
 
 
@@ -50,16 +51,20 @@ PANEL_ELEMENTS_MAP: dict[type, WidgetDict] = {
 
 _PANEL_RESULTS_MAP = {
     str: pn.pane.Str,
-    PIL.Image.Image: pn.pane.PNG,
+    Image.Image: pn.pane.PNG,
 }
 
 
-def get_help_for_arg(function: Callable, arg_name: str) -> str | None:
-    arg = function.__annotations__.get(arg_name, None)
-    try:
-        return arg.__metadata__[0].help
-    except AttributeError:
-        return None
+def get_help_for_arg(function: Callable, arg_name: str) -> Optional[str]:
+    annotation = function.__annotations__.get(arg_name)
+    if metadata := getattr(annotation, "__metadata__", None):
+        return getattr(metadata[0], "help", None)
+
+    if getattr(annotation, "__origin__", None) is typing.Annotated:
+        for arg in annotation.__args__[1:]:
+            if isinstance(arg, str):
+                return arg
+    return None
 
 
 def __widget_factory_wrapper(*, widget_dict, args_factory, arg_type, additional_args):
@@ -136,7 +141,7 @@ def generate_panel_code(  # noqa: C901, PLR0913
     for arg_name, arg_type in [*args_types.items(), *kwargs_types.items()]:
         if arg_name in args_to_skip:
             continue
-        widget_dict = elements_map.get(arg_type, None)
+        widget_dict = elements_map.get(arg_type)
         if arg_name in arg_name_widget_map:
             widget_dict = WidgetDict(widget=arg_name_widget_map[arg_name], args_factory=widget_dict["args_factory"])
         if widget_dict is None:

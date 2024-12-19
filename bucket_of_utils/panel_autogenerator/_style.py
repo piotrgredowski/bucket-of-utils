@@ -14,21 +14,21 @@ class Style:
     title: TitleType = TitleType.CAPITALIZED
 
     def format_title(self, function_name: str):
-        def __split(word: str):
+        def _split(word: str) -> list[str]:
             return word.split("_")
 
-        def _capitalize(function_name: str) -> str:
-            return [w.capitalize() for w in __split(function_name)]
+        def _capitalize(function_name: str) -> list[str]:
+            return [w.capitalize() for w in _split(function_name)]
 
-        def _capitalize_first_word(function_name: str) -> str:
-            splitted = __split(function_name)
-            return [splitted[0].capitalize(), *splitted[1:]]
+        def _capitalize_first_word(function_name: str) -> list[str]:
+            words = _split(function_name)
+            return [words[0].capitalize(), *words[1:]]
 
-        def _lower(function_name: str) -> str:
-            return [w.lower() for w in __split(function_name)]
+        def _lower(function_name: str) -> list[str]:
+            return [w.lower() for w in _split(function_name)]
 
-        def _upper(function_name: str) -> str:
-            return [w.upper() for w in __split(function_name)]
+        def _upper(function_name: str) -> list[str]:
+            return [w.upper() for w in _split(function_name)]
 
         title_formatters = {
             TitleType.CAPITALIZED: _capitalize,
