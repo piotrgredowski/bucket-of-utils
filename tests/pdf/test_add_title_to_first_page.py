@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pdf_annotate as pa
 
-from bucket_of_utils.pdf.add_title_to_first_page import AnnotationConfig
-from bucket_of_utils.pdf.add_title_to_first_page import add_file_name_annotation_to_pdf
+from bucket_of_utils.pdf.add_title_to_first_page.add_title_to_first_page import AnnotationConfig
+from bucket_of_utils.pdf.add_title_to_first_page.add_title_to_first_page import add_file_name_annotation_to_pdf
 
 
 def test_add_file_name_annotation_to_pdf():

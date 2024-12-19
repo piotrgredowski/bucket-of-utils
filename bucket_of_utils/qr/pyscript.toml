@@ -7,11 +7,9 @@ packages = [
 ]
 [files]
 "./index.py" = "./index.py"
-"{SOURCE}" = "../../bucket_of_utils"
-"{TARGET}" = "bucket_of_utils"
-"{SOURCE}/qr/wifi.py" = "{TARGET}/qr/wifi.py"
-"{SOURCE}/panel_autogenerator/__init__.py" = "{TARGET}/panel_autogenerator/__init__.py"
-"{SOURCE}/panel_autogenerator/_generate.py" = "{TARGET}/panel_autogenerator/_generate.py"
-"{SOURCE}/panel_autogenerator/_style.py" = "{TARGET}/panel_autogenerator/_style.py"
+"../../bucket_of_utils/qr/wifi.py" = "bucket_of_utils/qr/wifi.py"
+"../../bucket_of_utils/panel_autogenerator/__init__.py" = "bucket_of_utils/panel_autogenerator/__init__.py"
+"../../bucket_of_utils/panel_autogenerator/_generate.py" = "bucket_of_utils/panel_autogenerator/_generate.py"
+"../../bucket_of_utils/panel_autogenerator/_style.py" = "bucket_of_utils/panel_autogenerator/_style.py"
 
 "https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/ttf/FiraCode-Regular.ttf" = "_static/fonts/FiraCode-Regular.ttf"

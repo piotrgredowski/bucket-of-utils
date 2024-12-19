@@ -123,3 +123,10 @@ force-single-line = true
 
 [tool.mypy]
 exclude = [".venv"]
+
+[dependency-groups]
+dev = [
+    "imgcompare>=2.0.1",
+    "pytest-mock>=3.14.0",
+    "pytest>=8.3.4",
+]
