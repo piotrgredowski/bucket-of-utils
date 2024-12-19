@@ -6,14 +6,15 @@
       "request": "launch",
       "module": "bucket_of_utils.qr.wifi",
       "justMyCode": true,
-      "args": [
-        "--ssid",
-        "my_ssid",
-        "--password",
-        "my_password",
-        "--security",
-        "wpa"
-      ]
+      "args": ["--ssid", "my_ssid", "--password", "my_password", "--security", "wpa"]
+    },
+    {
+      "name": "Split PDF",
+      "type": "python",
+      "request": "launch",
+      "module": "bucket_of_utils.pdf.split_pdf.split_pdf",
+      "justMyCode": true,
+      "args": []
     },
     //  config for running all tests
     {
